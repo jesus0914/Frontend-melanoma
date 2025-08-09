@@ -33,6 +33,7 @@ export default function ImageUploader({ maxHeight = 220, compact = false }: Imag
         process.env.NEXT_PUBLIC_API_URL || 'https://backend-melanoma-production-8fb4.up.railway.app/predict',
         { method: 'POST', body: formData }
       );
+
       const data = await res.json();
       setResult(data.prediccion || data.error);
     } catch {
