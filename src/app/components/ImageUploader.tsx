@@ -8,7 +8,7 @@ interface ImageUploaderProps {
   compact?: boolean;
 }
 
-export default function ImageUploader({ maxHeight = 180, compact = false }: ImageUploaderProps) {
+export default function ImageUploader({ maxHeight = 220, compact = false }: ImageUploaderProps) {
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [result, setResult] = useState<string | null>(null);
@@ -30,7 +30,7 @@ export default function ImageUploader({ maxHeight = 180, compact = false }: Imag
     setLoading(true);
     try {
       const res = await fetch(
-        process.env.NEXT_PUBLIC_API_URL || 'NEXT_PUBLIC_API_URL/predict',
+        process.env.NEXT_PUBLIC_API_URL || 'https://backend-melanoma-production-8fb4.up.railway.app/predict',
         { method: 'POST', body: formData }
       );
       const data = await res.json();
@@ -79,12 +79,20 @@ export default function ImageUploader({ maxHeight = 180, compact = false }: Imag
         </div>
         <p className={`text-xs leading-snug ${type.text}`}>
           {lower === 'maligno'
-            ? <>Detecté cambios que sería bueno que un médico revise pronto.  
+            ? (
+              <>
+                Detecté cambios que sería bueno que un médico revise pronto.  
                 No implica algo grave de inmediato, pero sí es importante confirmarlo.  
-                Mientras tanto, evita sol intenso, hidrata tu piel y observa cambios.</>
-            : <>Todo indica que tu piel está bien.  
+                Mientras tanto, evita sol intenso, hidrata tu piel y observa cambios.
+              </>
+            )
+            : (
+              <>
+                Todo indica que tu piel está bien.  
                 Aun así, sigue cuidándola: usa protector solar a diario, hidrátala  
-                y revisa periódicamente para asegurarte de que todo siga igual.</>}
+                y revisa periódicamente para asegurarte de que todo siga igual.
+              </>
+            )}
         </p>
       </div>
     );
